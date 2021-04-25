@@ -1,2 +1,0 @@
-# ErnieChessAI
-Chess AI
