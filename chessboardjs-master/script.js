@@ -5,7 +5,8 @@
 // https://github.com/jhlywa/chess.js
 
 //const { Chess } = require('./node_modules/chess.js');
-//const { Chessboard } = require('./js/chessboard-0.3.0.js'); 
+//import { Chess } from './js/chessboard-0.3.0.js'; 
+import * from "./js/chess.js";
 var board = null
 var game = new Chess()
 
@@ -49,7 +50,7 @@ function onDrop (source, target) {
 function onSnapEnd () {
   board.position(game.fen())
 }
-/*
+
 var config = {
   draggable: true,
   position: 'start',
@@ -57,18 +58,18 @@ var config = {
   onDrop: onDrop,
   onSnapEnd: onSnapEnd
 }
-//board = Chessboard('board1', config)
-*/
+board = Chessboard('board1', config)
+
 
 // from simple github tutorial
-
+/*
 var config = {
   position: 'start',
   draggable: true
 }
 
 var board1 = ChessBoard('board1', config);
-
+*/
 
 // random game
 /*
