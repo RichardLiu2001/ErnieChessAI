@@ -4,9 +4,11 @@
 // NOTE: this example uses the chess.js library:
 // https://github.com/jhlywa/chess.js
 
-/*
+//const { Chess } = require('./node_modules/chess.js');
+//const { Chessboard } = require('./js/chessboard-0.3.0.js'); 
 var board = null
 var game = new Chess()
+
 
 function onDragStart (source, piece, position, orientation) {
   // do not pick up pieces if the game is over
@@ -47,7 +49,7 @@ function onDrop (source, target) {
 function onSnapEnd () {
   board.position(game.fen())
 }
-
+/*
 var config = {
   draggable: true,
   position: 'start',
@@ -55,8 +57,10 @@ var config = {
   onDrop: onDrop,
   onSnapEnd: onSnapEnd
 }
-board = Chessboard('myBoard', config)
+//board = Chessboard('board1', config)
 */
+
+// from simple github tutorial
 
 var config = {
   position: 'start',
@@ -64,3 +68,17 @@ var config = {
 }
 
 var board1 = ChessBoard('board1', config);
+
+
+// random game
+/*
+const { Chess } = require('./node_modules/chess.js');
+const chess = new Chess();
+
+while (!chess.game_over()) {
+    const moves = chess.moves()
+    const move = moves[Math.floor(Math.random() * moves.length)]
+    chess.move(move)
+}
+console.log(chess.pgn())
+*/
