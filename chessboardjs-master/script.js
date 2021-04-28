@@ -6,9 +6,12 @@
 
 //const { Chess } = require('./node_modules/chess.js');
 //import { Chess } from './js/chessboard-0.3.0.js'; 
-import * from "./js/chess.js";
-var board = null
-var game = new Chess()
+
+//var board = require('')
+var game = require('chess')
+//var board = require('./chessboard-1.0.0.min')
+//var board = null
+game = new Chess()
 
 
 function onDragStart (source, piece, position, orientation) {
@@ -48,7 +51,7 @@ function onDrop (source, target) {
 // update the board position after the piece snap
 // for castling, en passant, pawn promotion
 function onSnapEnd () {
-  board.position(game.fen())
+  //board.position(game.fen())
 }
 
 var config = {
@@ -58,7 +61,7 @@ var config = {
   onDrop: onDrop,
   onSnapEnd: onSnapEnd
 }
-board = Chessboard('board1', config)
+//board = Chessboard('board1', config)
 
 
 // from simple github tutorial
