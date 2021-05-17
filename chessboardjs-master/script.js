@@ -1,18 +1,6 @@
-// NOTE: this example uses the chess.js library:
-// https://github.com/jhlywa/chess.js
-// import { Chess } from "./js/chess.js";
-// NOTE: this example uses the chess.js library:
-// https://github.com/jhlywa/chess.js
-
-//const { Chess } = require('./node_modules/chess.js');
-//import { Chess } from './js/chessboard-0.3.0.js'; 
-
-//var board = require('')
-var game = require('chess')
-//var board = require('./chessboard-1.0.0.min')
-//var board = null
-game = new Chess()
-
+var board = null
+var game = new Chess()
+var $status = $('#status')
 
 function onDragStart (source, piece, position, orientation) {
   // do not pick up pieces if the game is over
@@ -31,6 +19,8 @@ function makeRandomMove () {
   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
   game.move(possibleMoves[randomIdx])
   board.position(game.fen())
+  updateStatus()
+
 }
 
 function onDrop (source, target) {
@@ -51,7 +41,39 @@ function onDrop (source, target) {
 // update the board position after the piece snap
 // for castling, en passant, pawn promotion
 function onSnapEnd () {
-  //board.position(game.fen())
+  board.position(game.fen())
+  updateStatus()
+}
+
+function updateStatus () {
+  var status = ''
+
+  var moveColor = 'White'
+  if (game.turn() === 'b') {
+    moveColor = 'Black'
+  }
+
+  // checkmate?
+  if (game.in_checkmate()) {
+    status = 'Game over, ' + moveColor + ' is in checkmate.'
+  }
+
+  // draw?
+  else if (game.in_draw()) {
+    status = 'Game over, drawn position'
+  }
+
+  // game still on
+  else {
+    status = moveColor + ' to move'
+
+    // check?
+    if (game.in_check()) {
+      status += ', ' + moveColor + ' is in check'
+    }
+  }
+
+  $status.html(status)
 }
 
 var config = {
@@ -61,28 +83,6 @@ var config = {
   onDrop: onDrop,
   onSnapEnd: onSnapEnd
 }
-//board = Chessboard('board1', config)
+board = Chessboard('board1', config)
 
-
-// from simple github tutorial
-/*
-var config = {
-  position: 'start',
-  draggable: true
-}
-
-var board1 = ChessBoard('board1', config);
-*/
-
-// random game
-/*
-const { Chess } = require('./node_modules/chess.js');
-const chess = new Chess();
-
-while (!chess.game_over()) {
-    const moves = chess.moves()
-    const move = moves[Math.floor(Math.random() * moves.length)]
-    chess.move(move)
-}
-console.log(chess.pgn())
-*/
+updateStatus()
