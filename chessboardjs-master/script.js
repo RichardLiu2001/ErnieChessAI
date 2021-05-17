@@ -15,6 +15,7 @@ function makeRandomMove () {
 
   // game over
   if (possibleMoves.length === 0) return
+  //window.alert(game.moves())
 
   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
   game.move(possibleMoves[randomIdx])
@@ -84,5 +85,6 @@ var config = {
   onSnapEnd: onSnapEnd
 }
 board = Chessboard('board1', config)
+
 
 updateStatus()
