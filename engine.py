@@ -64,9 +64,67 @@ class Engine:
 
         return best_move
 
+    def get_outcome(self):
+        return self.board.outcome()
+
+    def get_legal_moves(self):
+        return self.board.legal_moves
+
+    def push(self, move):
+        return self.board.push(move)
 
 #print(evaluate_position_fen(board.fen()))
 
-engine = Engine(0)
+def get_player_move(engine):
+    
+    valid_move = False
+    move = None
+
+    while not valid_move:
+        move_string = input("Enter your move: ")
+        move = chess.Move.from_uci(move_string)
+        #move = engine.board.parse_san(move_string)
+        print(move)
+        legal_moves = engine.get_legal_moves()
+        is_valid = move in legal_moves
+
+        if not is_valid:
+            print("Not a legal move, ya fucken nerd\n")
+        else:
+            print("Legal move")
+            valid_move = True
+        
+    return move
+
+
+    
+
+
+
+def play():
+    color = input("enter your color: ")
+
+    color_value = 0
+
+    if color[0] == 'b' or color[0] == 'B':
+        color_value = 1
+    
+    engine = Engine(color_value)
+    move = get_player_move(engine)
+    engine.push(move)
+    print(move)
+    #while engine.get_outcome() != None:
+       # move = get_player_move(engine)
+
+
+
+
+
+
+    print("outcome: " + str(engine.get_outcome()))
+    print(engine.board)
+
+play()
+
 
 #print(engine.get_move())
