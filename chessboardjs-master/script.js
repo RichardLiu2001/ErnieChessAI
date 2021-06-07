@@ -1,6 +1,7 @@
 var board = null
 var game = new Chess()
 var $status = $('#status')
+var xhttp = new XMLHttpRequest();
 
 function onDragStart (source, piece, position, orientation) {
   // do not pick up pieces if the game is over
@@ -8,6 +9,16 @@ function onDragStart (source, piece, position, orientation) {
 
   // only pick up pieces for White
   if (piece.search(/^b/) !== -1) return false
+}
+
+function sendUserInfo(move) {
+  let userInfo = {"move: " : move}
+  const request = new XMLHttpRequest()
+  request.open('POST', `/processUserInfo/${JSON.stringify(userInfo)}`)
+  request.onload = () => {
+    const flaskMessage = request.responseTextconsole.log("flask message: " + flaskMessage)
+  }
+  request.send()
 }
 
 function makeRandomMove () {
@@ -20,8 +31,11 @@ function makeRandomMove () {
   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
   move = possibleMoves[randomIdx]
   console.log(move)
+  sendUserInfo(move)
+
+  /*
   $.post( "/chess", {
-    javascript_data: move 
+    "javascript_data": move 
   });
   /*
   $.get("/getpythondata", function(data) {

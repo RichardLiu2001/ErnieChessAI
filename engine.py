@@ -52,7 +52,7 @@ class Engine:
         # shuffle move list so that it doesn't go back and forth
         #print(type(self.board.legal_moves.))
         #legal_moves = random.shuffle(self.board.legal_moves)
-
+        
         for move in self.board.legal_moves:
             self.board.push(move)
             if self.board.is_checkmate():
@@ -134,12 +134,6 @@ def play():
         engine.push(move)
         print("move: " + str(move))
         print(engine.board)
-
-
-
-
-
-
 
     print("outcome: " + str(engine.get_outcome()))
     print(engine.board)

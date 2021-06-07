@@ -1,15 +1,15 @@
 from flask import Flask, request
+import json
+
 app = Flask(__name__)
 
-@app.route('/chess', methods=['POST'])
+@app.route('/processUserInfo/<string:userInfo>', methods=['POST'])
+def processUserInfo(userInfo):
 
-def get_names():
-    move = "no move"
-    if request.method == 'POST':
-	    move = request.get_json()
-    
-    print("move: " + move)
-        #print("MOVE: " + move)
+    userInfo = json.loads(userInfo)
 
-if __name__ == "__app__":
-    app.run(debug=True)
+    print('USER INFO RECEIVED')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)   
