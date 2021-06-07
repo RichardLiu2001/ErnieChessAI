@@ -1,6 +1,6 @@
 import chess
 import enum
-
+import random
 
 class Engine:
 # white = 0, black = 1
@@ -44,10 +44,14 @@ class Engine:
 
         return white_sum, black_sum
 
-
+    # gets the best move from the engine
     def get_move(self):
         best_move = None
         best_move_score = -1
+        
+        # shuffle move list so that it doesn't go back and forth
+        #print(type(self.board.legal_moves.))
+        #legal_moves = random.shuffle(self.board.legal_moves)
 
         for move in self.board.legal_moves:
             self.board.push(move)
@@ -75,6 +79,7 @@ class Engine:
 
 #print(evaluate_position_fen(board.fen()))
 
+# retrieves the chess.Move from user input
 def get_player_move(engine):
     
     valid_move = False
@@ -100,7 +105,7 @@ def get_player_move(engine):
     
 
 
-
+# plays a game against the engine
 def play():
     color = input("enter your color: ")
 
@@ -110,11 +115,26 @@ def play():
         color_value = 1
     
     engine = Engine(color_value)
-    move = get_player_move(engine)
-    engine.push(move)
-    print(move)
-    #while engine.get_outcome() != None:
-       # move = get_player_move(engine)
+    #move = get_player_move(engine)
+    #engine.push(move)
+    #print(move)
+    move = None
+    player_turn = color_value == 0
+    #print("engine outcome: " + str(engine.get_outcome()))
+    while engine.get_outcome() == None:
+
+        if player_turn:
+            move = get_player_move(engine) 
+            player_turn = False
+        else:
+            print("engine turn")
+            player_turn = True
+            move = engine.get_move()
+
+        engine.push(move)
+        print("move: " + str(move))
+        print(engine.board)
+
 
 
 

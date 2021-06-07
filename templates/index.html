@@ -1,22 +1,19 @@
 <script>
     // GET is the default method, so we don't need to set it
-    fetch('/hello')
+    fetch('/')
         .then(function (response) {
             return response.text();
         })
         .then(function (text) {
 
             // Print the greeting as text
-            alert("10");
             console.log('GET response text:');
             console.log(text);
         });
 
     // Send the same request
-    fetch('/hello')
+    fetch('/')
         .then(function (response) {
-            
-            alert("19");
 
             // But parse it as JSON this time
             return response.json();
@@ -29,7 +26,7 @@
         })
 
     // POST
-    fetch('/hello', {
+    fetch('/', {
 
         // Declare what type of data we're sending
         headers: {
@@ -43,17 +40,13 @@
         body: JSON.stringify({"greeting": "Hello from the browser!"})
     })
         .then(function (response) {
-            alert("46");
-
             return response.text();
         })
         .then(function (text) {
-            alert("51");
 
             console.log('POST response: ');
 
             // Should be 'OK' if everything was successful
-            alert("56");
             console.log(text);
         });
 </script>

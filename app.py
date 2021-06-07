@@ -1,22 +1,21 @@
-########  imports  ##########
-from flask import Flask, jsonify, request, render_template
-#from engine import *
+from flask import Flask
+from flask_restful import Api, Resource
+
 app = Flask(__name__)
+api = Api(app)
 
-@app.route('/hello', methods=['GET', 'POST'])
-def hello():
+names = {"richard" : {"age" : 19, "gender" : "male"},
+        "tim" : {"age" : 69, "gender" : "?"}}
 
-    # POST request
-    if request.method == 'POST':
-        print('Incoming..')
-        print(request.get_json())  # parse as JSON
-        return 'OK', 200
+class HelloWorld(Resource):
+    def get(self, name):
+        return names[name]
 
-    # GET request
-    else:
-        message = {'greeting':'Hello from Flask!'}
-        return jsonify(message)  # serialize and use JSON headers
+    def post(self):
+        return {"data" : "posted"}
 
 
-if __name__ == '__main__':
+api.add_resource(HelloWorld, "/helloworld/<string:name>")
+
+if __name__ == "__app__":
     app.run(debug=True)

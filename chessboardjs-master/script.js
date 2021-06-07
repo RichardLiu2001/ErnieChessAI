@@ -18,7 +18,18 @@ function makeRandomMove () {
   //window.alert(game.moves())
 
   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
-  game.move(possibleMoves[randomIdx])
+  move = possibleMoves[randomIdx]
+  console.log(move)
+  $.post( "/chess", {
+    javascript_data: move 
+  });
+  /*
+  $.get("/getpythondata", function(data) {
+    console.log($.parseJSON(data))
+  })
+  */
+
+  game.move(move)
   board.position(game.fen())
   updateStatus()
 
