@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+        <button id="btn">Click Me</button>
+
+        <div id="response"></div>
+
+        <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+
+      $('button#btn').click(function(){
+	    var letters="abcdefgh";
+		var myMove = letters[Math.floor(Math.random() * letters.length)] + Math.floor(Math.random() * (8 - 1) + 1);
+		var moves={
+		'move': myMove
+		}
+		console.log(moves)
+        $.ajax({
+			type: "POST",
+            url: "/_get_data/",
+            data:JSON.stringify(moves),
+			contentType: 'application/json',
+            dataType: "json",
+            success: function(resp){
+			    console.log(resp);
+			}
+        });
+      });
+  </script>
+    </body>
+</html>
