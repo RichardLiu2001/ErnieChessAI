@@ -21,12 +21,12 @@ function makeRandomMove () {
   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
   move = possibleMoves[randomIdx]
   console.log(move)
-  sendUserInfo(move)
+  //sendUserInfo(move)
 
   game.move(move)
   board.position(game.fen())
   updateStatus()
-
+  
   $.ajax({
     type: "POST",
           url: "/_get_data/",
@@ -37,6 +37,7 @@ function makeRandomMove () {
         console.log(resp);
     }
       });
+      
 
 }
 
