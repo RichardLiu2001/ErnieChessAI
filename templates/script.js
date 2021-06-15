@@ -11,16 +11,6 @@ function onDragStart (source, piece, position, orientation) {
   if (piece.search(/^b/) !== -1) return false
 }
 
-function sendUserInfo(move) {
-  let userInfo = {"move: " : move}
-  const request = new XMLHttpRequest()
-  request.open('POST', `/processUserInfo/${JSON.stringify(userInfo)}`)
-  request.onload = () => {
-    const flaskMessage = request.responseTextconsole.log("flask message: " + flaskMessage)
-  }
-  request.send()
-}
-
 function makeRandomMove () {
   var possibleMoves = game.moves()
 
@@ -33,19 +23,20 @@ function makeRandomMove () {
   console.log(move)
   sendUserInfo(move)
 
-  /*
-  $.post( "/chess", {
-    "javascript_data": move 
-  });
-  /*
-  $.get("/getpythondata", function(data) {
-    console.log($.parseJSON(data))
-  })
-  */
-
   game.move(move)
   board.position(game.fen())
   updateStatus()
+
+  $.ajax({
+    type: "POST",
+          url: "/_get_data/",
+          data:JSON.stringify(move),
+    contentType: 'application/json',
+          dataType: "json",
+          success: function(resp){
+        console.log(resp);
+    }
+      });
 
 }
 

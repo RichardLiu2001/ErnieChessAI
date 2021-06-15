@@ -1,21 +1,25 @@
-from flask import Flask
-from flask_restful import Api, Resource
+from flask import request, Flask, render_template, jsonify, json
+
+import sys
 
 app = Flask(__name__)
-api = Api(app)
 
-names = {"richard" : {"age" : 19, "gender" : "male"},
-        "tim" : {"age" : 69, "gender" : "?"}}
-
-class HelloWorld(Resource):
-    def get(self, name):
-        return names[name]
-
-    def post(self):
-        return {"data" : "posted"}
+@app.route('/')
+def index():
+    print("index")
+    return render_template('index.html')
 
 
-api.add_resource(HelloWorld, "/helloworld/<string:name>")
+@app.route('/_get_data/', methods=['POST'])
 
-if __name__ == "__app__":
+def _get_data():
+        print("Get data")
+        data = {}
+        data['move'] = request.json['move']       
+        print(data, file=sys.stderr)
+        nextMove = 'wrong move'
+        return jsonify(nextMove)
+
+
+if __name__ == "__main__":
     app.run(debug=True)
