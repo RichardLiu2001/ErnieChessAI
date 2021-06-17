@@ -2,12 +2,12 @@ from flask import request, Flask, render_template, jsonify, json
 
 import sys
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 
 @app.route('/')
 def index():
     print("index")
-    return render_template('index.html')
+    return render_template('./templates')
 
 
 @app.route('/_get_data/', methods=['POST'])
