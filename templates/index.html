@@ -1,10 +1,20 @@
 <html>
 <head>
 <!--  Including the chessboardjs files:-->
-
+    
+    <!--
     <script src="./js/chessboard-0.3.0.js"></script>
     <script src="./node_modules/chess.js/chess.js"></script>
-    <link rel="stylesheet" href="css/chessboard-0.3.0.min.css">
+    -->
+
+    
+    <script type=text/javascript src="{{
+      url_for('static', filename='js/chessboard-0.3.0.js') }}"></script>
+    <script type=text/javascript src="{{
+      url_for('static', filename='node_modules/chess.js/chess.js') }}"></script>
+    
+    <link rel="stylesheet" type="text/css" href="{{
+      url_for('static', filename='css/chessboard-0.3.0.min.css') }}">
 
 <!--  Including jQuery, another tool chessboardjs uses:-->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -17,21 +27,22 @@
   <div id="status"></div>
 
   
+  
   <script type=text/javascript src="{{
     url_for('static', filename='js/chess.js') }}"></script>
   <script type=text/javascript src="{{
     url_for('static', filename='js/chessboard-1.0.0.js') }}"></script>
   <script type=text/javascript src="{{
-    url_for('static', filename='script.js') }}"></script>
+    url_for('static', filename='js/script.js') }}"></script>
   
 
-  <!--
   
+  <!--
   <script src="./js/chess.js"></script>
   <script src="./js/chessboard-1.0.0.js"></script>
   <script src = "script.js"></script>
-  
   -->
+  
   </body>
 
   
