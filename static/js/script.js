@@ -1,7 +1,6 @@
 var board = null
 var game = new Chess()
 var $status = $('#status')
-var xhttp = new XMLHttpRequest();
 
 function onDragStart (source, piece, position, orientation) {
   // do not pick up pieces if the game is over
@@ -13,33 +12,41 @@ function onDragStart (source, piece, position, orientation) {
 
 function makeRandomMove () {
   var possibleMoves = game.moves()
-
   // game over
   if (possibleMoves.length === 0) return
   //window.alert(game.moves())
 
   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
   move = possibleMoves[randomIdx]
-  console.log(move)
+  console.log("random move: " + move)
   //sendUserInfo(move)
 
   game.move(move)
   board.position(game.fen())
   updateStatus()
   
+}
+    
+function send_player_move() {
+  var letters="abcdefgh";
+  var myMove = letters[Math.floor(Math.random() * letters.length)] + Math.floor(Math.random() * (8 - 1) + 1);
+  var moves={
+  'move': myMove
+  }
+
+  console.log("moves: " + moves)
   $.ajax({
     type: "POST",
-          url: "/_get_data/",
-          data:JSON.stringify(move),
+    url: "/_get_data/",
+    data:JSON.stringify(moves),
     contentType: 'application/json',
-          dataType: "json",
-          success: function(resp){
-        console.log(resp);
+    dataType: "json",
+    success: function(resp){
+        console.log("resp: " + resp);
     }
-      });
-      
-
+  });
 }
+
 
 function onDrop (source, target) {
   // see if the move is legal
@@ -52,6 +59,7 @@ function onDrop (source, target) {
   // illegal move
   if (move === null) return 'snapback'
 
+  console.log("player move: " + move.san)
   // make random legal move for black
   window.setTimeout(makeRandomMove, 250)
 }
