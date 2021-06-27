@@ -42,31 +42,48 @@ class Engine:
                 else:
                     black_sum += value
 
-        return white_sum, black_sum
+        if self.engine_color == 0:
+            return white_sum - black_sum
+        else:
+            return black_sum - white_sum
+
+        #return white_sum, black_sum
 
     # gets the best move from the engine
     def get_move(self):
         best_move = None
-        best_move_score = -1
+        best_move_score = -99999
         
         # shuffle move list so that it doesn't go back and forth
         #print(type(self.board.legal_moves.))
         #legal_moves = random.shuffle(self.board.legal_moves)
         
+        #for move in random.shuffle(self.board.legal_moves):
+        
+        legal_moves = []
         for move in self.board.legal_moves:
-            self.board.push(move)
+            san = str(self.board.san(move))
+            legal_moves.append(san)
+
+        #print(type(self.board.legal_moves))
+        random.shuffle(legal_moves)
+        for move in legal_moves:
+            self.board.push_san(move)
             if self.board.is_checkmate():
                 self.board.pop()
                 return move
-            current_move_score = self.evaluate_position_fen()[self.engine_color]
+            
+            current_move_score = self.evaluate_position_fen()
 
             if current_move_score > best_move_score:
                 best_move_score = current_move_score
                 best_move = move
 
             self.board.pop()
-
+        
         return best_move
+        #return self.board.san(best_move)
+
 
     def get_outcome(self):
         return self.board.outcome()
@@ -76,6 +93,9 @@ class Engine:
 
     def push(self, move):
         return self.board.push(move)
+    
+    def push_san(self, move):
+        return self.board.push_san(move)
 
 #print(evaluate_position_fen(board.fen()))
 
@@ -138,7 +158,7 @@ def play():
     print("outcome: " + str(engine.get_outcome()))
     print(engine.board)
 
-play()
+#play()
 
 
 #print(engine.get_move())

@@ -26,23 +26,27 @@ function makeRandomMove () {
   updateStatus()
   
 }
-    
-function send_player_move() {
-  var letters="abcdefgh";
-  var myMove = letters[Math.floor(Math.random() * letters.length)] + Math.floor(Math.random() * (8 - 1) + 1);
-  var moves={
-  'move': myMove
-  }
 
-  console.log("moves: " + moves)
+function makeComputerMove(move) {
+  console.log("make computer move: " + move);
+  game.move(move)
+  board.position(game.fen())
+  updateStatus()
+  //return makeRandomMove();
+}
+
+    
+function send_player_move(move) {
+
   $.ajax({
     type: "POST",
     url: "/_get_data/",
-    data:JSON.stringify(moves),
+    data:JSON.stringify(move),
     contentType: 'application/json',
     dataType: "json",
-    success: function(resp){
-        console.log("resp: " + resp);
+    success: function(resp) {
+      console.log("resp: " + resp);
+      makeComputerMove(resp);
     }
   });
 }
@@ -60,8 +64,9 @@ function onDrop (source, target) {
   if (move === null) return 'snapback'
 
   console.log("player move: " + move.san)
+  send_player_move(move.san);
   // make random legal move for black
-  window.setTimeout(makeRandomMove, 250)
+  window.setTimeout(makeComputerMove, 250)
 }
 
 // update the board position after the piece snap

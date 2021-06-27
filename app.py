@@ -1,8 +1,13 @@
 from flask import request, Flask, render_template, jsonify, json, send_file
+from engine import Engine
 
 import sys
 
+# white = 0, black = 1
+engine = Engine(1)
+
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -12,13 +17,20 @@ def index():
 
 @app.route('/_get_data/', methods=['POST'])
 def _get_data():
-        print("incoming data: " + str(request.json))
-        
-        #data = {}
-        #data['move'] = request.json['move']       
-        #print(data, file=sys.stderr)
-        nextMove = 'wrong move'
-        return jsonify(nextMove)
+      
+      player_move_san = str(request.json)
+      print("incoming data: " + player_move_san)
+
+      # push move to engine
+      engine.push_san(player_move_san)
+      engine_move = str(engine.get_move())
+      
+      print("engine move: " + engine_move)
+      #data = {}
+      #data['move'] = request.json['move']       
+      #print(data, file=sys.stderr)
+      engine.push_san(engine_move)
+      return jsonify(engine_move)
 
 @app.route('/img/chesspieces/wikipedia/wB.png')
 def get_wB():
