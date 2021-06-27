@@ -2,6 +2,9 @@ import chess
 import enum
 import random
 
+INFINITY = float('inf')
+NEGATIVE_INFINITY = -INFINITY
+
 class Engine:
 # white = 0, black = 1
 #turn = 0
@@ -25,9 +28,18 @@ class Engine:
         self.engine_color = engine_color
         self.board = chess.Board()
 
+    def get_legal_move_list(self):
+        legal_moves = []
+
+        for move in self.board.legal_moves:
+            san = str(self.board.san(move))
+            legal_moves.append(san) 
+
+        return legal_moves
+    
 
     # returns the sum of all pieces on the board from fen
-    def evaluate_position_fen(self):
+    def evaluate_position(self):
 
         white_sum = 0
         black_sum = 0
@@ -49,10 +61,11 @@ class Engine:
 
         #return white_sum, black_sum
 
+
     # gets the best move from the engine
-    def get_move(self):
+    def get_move_single(self):
         best_move = None
-        best_move_score = -99999
+        best_move_score = NEGATIVE_INFINITY
         
         # shuffle move list so that it doesn't go back and forth
         #print(type(self.board.legal_moves.))
@@ -60,12 +73,8 @@ class Engine:
         
         #for move in random.shuffle(self.board.legal_moves):
         
-        legal_moves = []
-        for move in self.board.legal_moves:
-            san = str(self.board.san(move))
-            legal_moves.append(san)
+        legal_moves = self.get_legal_move_list()
 
-        #print(type(self.board.legal_moves))
         random.shuffle(legal_moves)
         for move in legal_moves:
             self.board.push_san(move)
@@ -73,7 +82,7 @@ class Engine:
                 self.board.pop()
                 return move
             
-            current_move_score = self.evaluate_position_fen()
+            current_move_score = self.evaluate_position()
 
             if current_move_score > best_move_score:
                 best_move_score = current_move_score
@@ -83,7 +92,39 @@ class Engine:
         
         return best_move
         #return self.board.san(best_move)
+    def minimax(self, depth, best_move):
+        if depth == 0:
+            return self.evaluate_position()
+        
+        legal_moves = self.get_legal_move_list()
+        if len(legal_moves) == 0:
+            if self.board.is_checkmate():
+                return NEGATIVE_INFINITY
 
+            else:
+                # draw
+                return 0
+
+        best_evaluation = NEGATIVE_INFINITY
+        #best_move = None
+        
+        for move in legal_moves:
+            self.board.push_san(move)
+
+            current_evaluation = self.minimax(depth - 1, best_move)
+
+            if current_evaluation > best_evaluation:
+                best_evaluation = current_evaluation
+                best_move[0] = move
+            
+            self.board.pop()
+
+        return best_evaluation
+
+    def get_move(self):
+        best_move = [""]
+        self.minimax(3, best_move)
+        return best_move[0]
 
     def get_outcome(self):
         return self.board.outcome()
@@ -97,7 +138,6 @@ class Engine:
     def push_san(self, move):
         return self.board.push_san(move)
 
-#print(evaluate_position_fen(board.fen()))
 
 # retrieves the chess.Move from user input
 def get_player_move(engine):

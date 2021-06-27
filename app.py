@@ -20,7 +20,7 @@ def _get_data():
       
       player_move_san = str(request.json)
       print("incoming data: " + player_move_san)
-
+      
       # push move to engine
       engine.push_san(player_move_san)
       engine_move = str(engine.get_move())
