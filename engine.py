@@ -93,10 +93,18 @@ class Engine:
         return best_move
         #return self.board.san(best_move)
     def minimax(self, depth, best_move):
+
+        turn = 'black'
+        if self.board.turn:
+            turn = 'white'
+
         if depth == 0:
+
+            print("depth 0, returning " + str(self.evaluate_position()))
             return self.evaluate_position()
         
         legal_moves = self.get_legal_move_list()
+        random.shuffle(legal_moves)
         if len(legal_moves) == 0:
             if self.board.is_checkmate():
                 return NEGATIVE_INFINITY
@@ -106,21 +114,24 @@ class Engine:
                 return 0
 
         best_evaluation = NEGATIVE_INFINITY
-        #best_move = None
+        best_move_hold = None
         
         for move in legal_moves:
+
+            print("Depth " + str(depth) + ", evaluating " + move + " for " + turn)
             self.board.push_san(move)
 
             current_evaluation = self.minimax(depth - 1, best_move)
 
             if current_evaluation > best_evaluation:
                 best_evaluation = current_evaluation
-                best_move[0] = move
+                best_move_hold = move
             
             self.board.pop()
 
+        best_move[0] = best_move_hold
         return best_evaluation
-
+    
     def get_move(self):
         best_move = [""]
         self.minimax(3, best_move)
